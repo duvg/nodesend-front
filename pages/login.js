@@ -12,16 +12,16 @@ const Login = () => {
     },
     validationSchema: Yup.object({
       email: Yup.string()
-                .email('El email ingresado no es valido')
-                .required('El email es obligatorio'),
+        .email('El email ingresado no es valido')
+        .required('El email es obligatorio'),
       password: Yup.string()
-                .required('El password es obligatorio')
+        .required('El password es obligatorio')
     }),
-    onSubmit:() => {
+    onSubmit: () => {
       console.log("Iniciando sesion");
     }
-    
-    
+
+
   });
 
   return (
@@ -49,13 +49,13 @@ const Login = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                
-                { formik.touched.email && formik.errors.email ? (
-                  <div className="bg-gray-200 my-2 p-4 border-l-4 border-red-500 text-red-700"> 
+
+                {formik.touched.email && formik.errors.email ? (
+                  <div className="bg-gray-200 my-2 p-4 border-l-4 border-red-500 text-red-700">
                     {formik.errors.email}
-                  </div>    
-                ): null}
-                
+                  </div>
+                ) : null}
+
               </div>
 
               <div className="mb-4">
@@ -72,18 +72,18 @@ const Login = () => {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                 />
-                { formik.touched.password && formik.errors.password ? 
+                {formik.touched.password && formik.errors.password ?
                   <div className="bg-gray-200 my-2 p-4 border-l-4 botder-red-600 text-red-700">
-                    { formik.errors.password }
+                    {formik.errors.password}
                   </div>
-                : null}
+                  : null}
               </div>
               <input
                 type="submit"
                 className="bg-red-500 hover:bg-gray-900 w-full p-2 rounded text-white font-bold uppercase"
                 value="iniciar sesion"
               />
-              
+
             </form>
 
           </div>
@@ -92,5 +92,5 @@ const Login = () => {
     </Layout>
   );
 }
- 
+
 export default Login;
