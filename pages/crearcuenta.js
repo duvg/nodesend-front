@@ -3,7 +3,6 @@ import Layout from '../components/Layout';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import authContext from '../context/auth/authContext';
-import Alerta from '../components/Alerta';
 import useAlerta from '../hooks/useAlerta';
 
 const CrearCuenta = () => {
@@ -15,12 +14,13 @@ const CrearCuenta = () => {
     useEffect(() => {
         
         if(mensaje) {
+            console.log(mensaje);
             useAlerta(mensaje, error); // Alerta de la operación sea exitosa o erronea
             resetErrorMessage(); // Limpiar el mensaje y el error del state
         }
 
         // Si no hay errores limpiar el formulario
-        error !== false ? resetForm() : null;
+        error === false ? resetForm() : null;
         
        
     }, [mensaje]);

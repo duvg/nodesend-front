@@ -1,9 +1,37 @@
-import React from 'react';
+import React, { useContext, useEffect} from 'react';
 import Layout from '../components/Layout';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useRouter } from 'next/router';
+// Context
+import authContext from '../context/auth/authContext';
+import useAlerta from "../hooks/useAlerta";
 
 const Login = () => {
+
+  const AuthContext = useContext(authContext);
+
+  const {token, mensaje, error, autenticado, iniciarSesion, resetErrorMessage} = AuthContext;
+
+  // Next router
+  const router = useRouter();
+
+  useEffect(() => {
+
+    if(mensaje) {
+      useAlerta(mensaje, error); // Alerta de la operación sea exitosa o erronea
+      resetErrorMessage(); // Limpiar el mensaje y el error del state
+    }
+
+    if(autenticado) {
+      router.push('/');
+    }
+
+    // Si no hay errores limpiar el formulario
+    error === false ? resetForm() : null;
+
+
+  }, [mensaje, autenticado]);
 
   const formik = useFormik({
     initialValues: {
@@ -17,12 +45,14 @@ const Login = () => {
       password: Yup.string()
         .required('El password es obligatorio')
     }),
-    onSubmit: () => {
-      console.log("Iniciando sesion");
+    onSubmit: data => {
+        iniciarSesion(data);
     }
-
-
   });
+
+  const resetForm = () => {
+    formik.resetForm();
+  }
 
   return (
     <Layout>

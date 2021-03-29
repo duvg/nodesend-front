@@ -4,20 +4,24 @@ import authReducer from './authReducer';
 
 // Types
 import {
-    USUARIO_REGISTRO_INICIO,
-    USUARIO_REGISTRO_EXITOSO,
+    USUARIO_REGISTRO_EXITO,
     USUARIO_REGISTRO_ERROR,
-    USUARIO_REGISTRO_RESET
+    USUARIO_REGISTRO_RESET,
+    USUARIO_LOGIN_EXITO,
+    USUARIO_LOGIN_ERROR,
+    USUARIO_AUTENTICADO,
+    CERRAR_SESION
 } from '../types';
 
 // Axios
 import clienteAxios from '../../config/axios';
+import TokenAuth from '../../config/tokenAuth';
 
 const AuthState = ({ children }) => {
 
     // State inicial
     const initialState = {
-        token: '',
+        token: typeof window !== 'undefined' ? localStorage.getItem('token') : '',
         autenticado: null,
         usuario: null,
         mensaje: null,
@@ -31,26 +35,68 @@ const AuthState = ({ children }) => {
     const registrarUsuario = async datos => {
 
         try {
-            const respuesta = await clienteAxios.post('/api/v1/users', datos);
+            const respuesta = await clienteAxios.post('/users', datos);
 
             dispatch({
-                type: USUARIO_REGISTRO_EXITOSO,
+                type: USUARIO_REGISTRO_EXITO,
                 payload: respuesta.data.msg
             });
 
         } catch (error) {
             dispatch({
                 type: USUARIO_REGISTRO_ERROR,
+                payload: {error: true, mensaje: error.response.data.msg ?
+                                                error.response.data.msg :
+                                                'Ocurrio un error, intenta nuevamente'}
+            });
+        }
+    }
+
+    // Autenticar usuarios
+    const iniciarSesion = async datos => {
+        try {
+            const respuesta = await clienteAxios.post('/auth', datos);
+            console.log(respuesta.data.token);
+            dispatch({
+                type: USUARIO_LOGIN_EXITO,
+                payload: respuesta.data.token
+            });
+
+        } catch (error) {
+            dispatch({
+                type: USUARIO_LOGIN_ERROR,
                 payload: {error: true, mensaje: error.response.data.msg}
             });
         }
     }
 
-    // Usuario autenticado
-    const usuarioAutenticado = nombre => {
+    // Retornar el usuario autenticado en base al JWT
+    const usuarioAutenticado = async () => {
+        const token = localStorage.getItem('token');
+        if(token) {
+            TokenAuth(token);
+        }
+        
+        try {
+            const respuesta =  await clienteAxios.get('/auth');
+
+            dispatch({
+                type: USUARIO_AUTENTICADO,
+                payload: respuesta.data.user
+            });
+        } catch (error) {
+            dispatch({
+                type: USUARIO_LOGIN_ERROR,
+                payload: {error: true, mensaje: error.response.data.msg}
+            });
+        }
+
+    }
+
+    // Cerrar la sesion
+    const cerrarSesion = () => {
         dispatch({
-            type: USUARIO_AUTENTICADO_INICIO,
-            payload: nombre
+            type: CERRAR_SESION
         });
     }
 
@@ -72,8 +118,10 @@ const AuthState = ({ children }) => {
                 error: state.error,
                 // Funciones
                 registrarUsuario,
+                resetErrorMessage,
+                iniciarSesion,
                 usuarioAutenticado,
-                resetErrorMessage
+                cerrarSesion
                 
             }}
         >
