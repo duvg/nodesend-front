@@ -110,7 +110,7 @@ const AuthState = ({ children }) => {
     return (
         <authContext.Provider
             value={{
-                // Variables
+                // Propiedades
                 token: state.token,
                 autenticado: state.autenticado,
                 usuario: state.usuario,
