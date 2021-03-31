@@ -18,7 +18,6 @@ export default function authReducer(state, action) {
             }
         case USUARIO_LOGIN_ERROR:
         case USUARIO_REGISTRO_ERROR:
-            console.log(action.payload);
             return {
                 ...state,
                 mensaje: action.payload.mensaje,
@@ -31,8 +30,6 @@ export default function authReducer(state, action) {
                 error: null
             }
         case USUARIO_LOGIN_EXITO:
-            console.log("asdsadd");
-            console.log(action.payload);
             localStorage.setItem('token', action.payload);
             return {
                 ...state,

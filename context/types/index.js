@@ -24,3 +24,6 @@ export const CREAR_ENLACE_ERROR = 'CREAR_ENLACE_ERROR';
 // Mostrar alerta
 export const MOSTRAR_ALERTA = 'MOSTRAR_ALERTA'; 
 export const OCULTAR_ALERTA = 'OCULTAR_ALERTA';
+
+// Limpiar el state
+export const LIMPIAR_STATE = 'LIMPIAR_STATE';

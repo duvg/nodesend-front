@@ -14,7 +14,6 @@ const CrearCuenta = () => {
     useEffect(() => {
         
         if(mensaje) {
-            console.log(mensaje);
             useAlerta(mensaje, error); // Alerta de la operación sea exitosa o erronea
             resetErrorMessage(); // Limpiar el mensaje y el error del state
         }

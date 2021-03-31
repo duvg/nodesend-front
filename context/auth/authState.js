@@ -56,7 +56,6 @@ const AuthState = ({ children }) => {
     const iniciarSesion = async datos => {
         try {
             const respuesta = await clienteAxios.post('/auth', datos);
-            console.log(respuesta.data.token);
             dispatch({
                 type: USUARIO_LOGIN_EXITO,
                 payload: respuesta.data.token
@@ -87,7 +86,7 @@ const AuthState = ({ children }) => {
         } catch (error) {
             dispatch({
                 type: USUARIO_LOGIN_ERROR,
-                payload: {error: true, mensaje: error.response.data.msg}
+                payload: {error: true, mensaje: error.reponse.data.msg}
             });
         }
 

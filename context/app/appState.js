@@ -9,7 +9,8 @@ import {
     CREAR_ENLACE_EXITO,
     CREAR_ENLACE_ERROR,
     MOSTRAR_ALERTA,
-    OCULTAR_ALERTA
+    OCULTAR_ALERTA,
+    LIMPIAR_STATE
 } from '../types';
 
 import clienteAxios from '../../config/axios';
@@ -62,9 +63,7 @@ const AppState = ({children}) => {
                     nombre_original: nombreArchivo
                 }
             });
-            console.log(respuesta.data);
         } catch (error) {
-            //console.log(error);
             dispatch({
                 type: SUBIR_ARCHIVO_ERROR,
                 payload: error.response.data.msg
@@ -89,8 +88,17 @@ const AppState = ({children}) => {
                 payload: resultado.data.msg
             });
         } catch (error) {
-            console.log(error);
+            dispatch({
+                type: CREAR_ENLACE_ERROR,
+                payload: error.response.data.msg
+            });
         }
+    }
+
+    const limpiarState = () => {
+        dispatch({
+            type: LIMPIAR_STATE
+        });
     }
 
     return(
@@ -108,7 +116,8 @@ const AppState = ({children}) => {
                 //Funciones
                 mostrarAlerta,
                 subirArchivo,
-                crearEnlace
+                crearEnlace,
+                limpiarState
             }}
         >
             {children}
