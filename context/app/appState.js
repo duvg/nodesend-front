@@ -10,12 +10,14 @@ import {
     CREAR_ENLACE_ERROR,
     MOSTRAR_ALERTA,
     OCULTAR_ALERTA,
-    LIMPIAR_STATE
+    LIMPIAR_STATE,
+    AGREGAR_PASSWORD,
+    AGREGAR_DESCARGAS
 } from '../types';
 
 import clienteAxios from '../../config/axios';
 
-const AppState = ({children}) => {
+const AppState = ({ children }) => {
 
     const initialState = {
         mensaje_archivo: null,
@@ -29,11 +31,11 @@ const AppState = ({children}) => {
     }
 
     // crear state y dispatch
-    const [state, dispatch] = useReducer(appReducer, initialState); 
+    const [state, dispatch] = useReducer(appReducer, initialState);
 
     // Mostrar alerta por el amaño de archivo
     const mostrarAlerta = msg => {
-    
+
         dispatch({
             type: MOSTRAR_ALERTA,
             payload: msg
@@ -52,7 +54,7 @@ const AppState = ({children}) => {
         dispatch({
             type: SUBIR_ARCHIVO_INICIO,
         });
-        
+
         try {
             const respuesta = await clienteAxios.post('/files', formData);
 
@@ -76,7 +78,7 @@ const AppState = ({children}) => {
         const data = {
             nombre: state.nombre,
             nombre_original: state.nombre_original,
-            descargas: state.decargas,
+            descargas: state.descargas,
             password: state.password,
             autor: state.autor
         }
@@ -101,7 +103,23 @@ const AppState = ({children}) => {
         });
     }
 
-    return(
+    // Agregar password al archivo
+    const agregarPassword = password => {
+        dispatch({
+            type: AGREGAR_PASSWORD,
+            payload: password
+        });
+    }
+
+    // Agregar la cantidad de descargas
+    const agregarDescargas = descargas => {
+        dispatch({
+            type: AGREGAR_DESCARGAS,
+            payload: descargas
+        });
+    }
+
+    return (
         <appContext.Provider
             value={{
                 // Propiedades
@@ -117,7 +135,9 @@ const AppState = ({children}) => {
                 mostrarAlerta,
                 subirArchivo,
                 crearEnlace,
-                limpiarState
+                limpiarState,
+                agregarPassword,
+                agregarDescargas
             }}
         >
             {children}

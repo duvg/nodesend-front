@@ -27,3 +27,7 @@ export const OCULTAR_ALERTA = 'OCULTAR_ALERTA';
 
 // Limpiar el state
 export const LIMPIAR_STATE = 'LIMPIAR_STATE';
+
+// Agregar password
+export const AGREGAR_PASSWORD = 'AGREGAR_PASSWORD';
+export const AGREGAR_DESCARGAS = 'AGREGAR_DESCARGAS';

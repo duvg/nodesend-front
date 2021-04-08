@@ -71,22 +71,28 @@ const AuthState = ({ children }) => {
 
     // Retornar el usuario autenticado en base al JWT
     const usuarioAutenticado = async () => {
+    
         const token = localStorage.getItem('token');
+    
         if(token) {
             TokenAuth(token);
         }
         
         try {
             const respuesta =  await clienteAxios.get('/auth');
+            
+            if(respuesta.data.user) {
+                dispatch({
+                    type: USUARIO_AUTENTICADO,
+                    payload: respuesta.data.user
+                });    
+            }
 
-            dispatch({
-                type: USUARIO_AUTENTICADO,
-                payload: respuesta.data.user
-            });
+            
         } catch (error) {
             dispatch({
                 type: USUARIO_LOGIN_ERROR,
-                payload: {error: true, mensaje: error.reponse.data.msg}
+                payload: {error: true, mensaje: 'Tu sesion expiro, inicia sesion'}
             });
         }
 

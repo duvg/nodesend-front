@@ -19,8 +19,14 @@ const Index = () => {
     const { mensaje_archivo, url } = AppContext;
 
     useEffect(() => {
-        usuarioAutenticado();
-        /*if(mensaje_archivo) {
+        const token = localStorage.getItem('token');
+
+        if(token) {
+            usuarioAutenticado();
+        }
+
+        /*
+        if(mensaje_archivo) {
             useAlerta(mensaje_archivo);
         }*/
         
